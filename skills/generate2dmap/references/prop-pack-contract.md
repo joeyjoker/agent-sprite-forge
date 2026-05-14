@@ -111,7 +111,7 @@ Use `1x4` only for non-actor platform strips when a slope, corner, broken varian
 Before extraction, run a chroma-key cleanup pass when the sheet has antialiased magenta fringe or when the props will be composited over a dark/detailed base. This is often better than direct hard-key extraction:
 
 ```bash
-python scripts/remove_chroma_key.py \
+python skills/imagegen/scripts/remove_chroma_key.py \
   --input assets/props/raw/forest-props-sheet.png \
   --out assets/props/raw/forest-props-sheet-alpha.png \
   --key-color '#ff00ff' \

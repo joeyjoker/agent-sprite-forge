@@ -5,11 +5,11 @@ A collection of image-generation skills for creating 2D game assets (sprites, ma
 ## Project structure
 
 ```
-scripts/
-  image_gen.py          — CLI for image generation (generate, edit, generate-batch)
-  remove_chroma_key.py  — Remove solid-magenta backgrounds → transparent PNG
 skills/
   imagegen/             — General-purpose image generation skill
+    scripts/
+      image_gen.py      — CLI for image generation (generate, edit, generate-batch)
+      remove_chroma_key.py — Remove solid-magenta backgrounds → transparent PNG
   generate2dsprite/     — 2D sprite and animation sheet generation
   generate2dmap/        — 2D map, prop pack, and scene generation
 image-gen.config.example.yaml — Configuration template
@@ -31,14 +31,14 @@ pip install -r requirements.txt
 cp image-gen.config.example.yaml image-gen.config.yaml
 # Edit image-gen.config.yaml with your credentials
 
-python scripts/image_gen.py generate --prompt "a pixel art sword" --out sword.png
-python scripts/image_gen.py edit --image sword.png --prompt "add a glow effect" --out sword-glow.png
-python scripts/remove_chroma_key.py --input raw.png --output clean.png
+python skills/imagegen/scripts/image_gen.py generate --prompt "a pixel art sword" --out sword.png
+python skills/imagegen/scripts/image_gen.py edit --image sword.png --prompt "add a glow effect" --out sword-glow.png
+python skills/imagegen/scripts/remove_chroma_key.py --input raw.png --output clean.png
 ```
 
 ## Running tests
 
 ```bash
-python scripts/image_gen.py --help
-python scripts/image_gen.py generate --dry-run --prompt "test" --out /tmp/test.png
+python skills/imagegen/scripts/image_gen.py --help
+python skills/imagegen/scripts/image_gen.py generate --dry-run --prompt "test" --out /tmp/test.png
 ```

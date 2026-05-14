@@ -1,6 +1,6 @@
 ---
 name: generate2dmap
-description: "Generate and revise production-oriented 2D game maps with `scripts/image_gen.py` as the default visual asset source, choosing a visual model, runtime object model, collision model, art direction, and engine/export target. Use to create or integrate RPG maps, monster-taming maps, tactical arenas, battle backgrounds, side-scroller/parallax scenes, tilemaps, layered raster maps, clean HD hand-painted maps, pixel-inspired maps, prop packs, collision zones, walkable areas, or map previews."
+description: "Generate and revise production-oriented 2D game maps with `skills/imagegen/scripts/image_gen.py` as the default visual asset source, choosing a visual model, runtime object model, collision model, art direction, and engine/export target. Use to create or integrate RPG maps, monster-taming maps, tactical arenas, battle backgrounds, side-scroller/parallax scenes, tilemaps, layered raster maps, clean HD hand-painted maps, pixel-inspired maps, prop packs, collision zones, walkable areas, or map previews."
 ---
 
 # Generate2dmap
@@ -51,7 +51,7 @@ When the user gives a genre instead of a technical map mode, choose the mode con
 
 ## Image Generation First
 
-This skill is image-generation-first for visual assets. Use `scripts/image_gen.py generate` as the default creative art source for base maps, in-world reference mockups, dressed references, stage references, prop sheets, prop sprites, tileset art, parallax layers, battle backgrounds, and other visible map assets.
+This skill is image-generation-first for visual assets. Use `skills/imagegen/scripts/image_gen.py generate` as the default creative art source for base maps, in-world reference mockups, dressed references, stage references, prop sheets, prop sprites, tileset art, parallax layers, battle backgrounds, and other visible map assets.
 
 The agent must write the creative image prompts itself. Do not use scripts to generate creative prompts or to procedurally draw final visual art. Scripts may assemble, slice, chroma-key, crop, validate, compose previews, emit JSON metadata, and wire image-generated assets into engine-native files such as Godot `.tscn` scenes.
 
@@ -64,7 +64,7 @@ Only use procedural drawing or scripted placeholder art when the user explicitly
 When generating an in-world reference mockup from an existing generated base/background, the prior image must be treated as an active visual reference, not just a file path or loose style hint:
 
 1. Save the base/background image first.
-2. Immediately before the next `scripts/image_gen.py edit` call, pass the saved image via `--image` to provide the visual reference.
+2. Immediately before the next `skills/imagegen/scripts/image_gen.py edit` call, pass the saved image via `--image` to provide the visual reference.
 3. In the next `image_gen` prompt, explicitly say to use the visible image immediately above as the visual reference.
 4. Describe concrete features from the viewed image that must be preserved, such as camera framing, horizon, road or water shapes, terrain boundaries, entrance/exit direction, major silhouettes, empty pads, and landmark positions.
 5. Generate an in-world reference mockup, not an annotated diagram. Do not draw circles, arrows, outlines, labels, numbers, UI callouts, text, captions, legends, highlighted boxes, highlighted zones, measurement lines, or explanatory overlays.
@@ -143,8 +143,8 @@ When unspecified:
    - Treat `hybrid` as a result of combining axes, not as a primary category.
 
 3. Produce assets.
-   - Write the creative prompts manually and use `scripts/image_gen.py generate` for visible map art unless the user explicitly chose existing assets or procedural placeholders.
-   - For baked raster maps, generate one background with `scripts/image_gen.py generate`, or edit/use an existing image when supplied, then add optional collision/zones metadata.
+   - Write the creative prompts manually and use `skills/imagegen/scripts/image_gen.py generate` for visible map art unless the user explicitly chose existing assets or procedural placeholders.
+   - For baked raster maps, generate one background with `skills/imagegen/scripts/image_gen.py generate`, or edit/use an existing image when supplied, then add optional collision/zones metadata.
    - For playable or editable layered maps, generate a foundation-only base/background first. The base must not contain runtime-controlled props, interactables, hazards, doors, gates, pickups, actors, or foreground occluders. If it does, regenerate or demote it to a reference artifact.
    - For layered raster maps, generate a ground-only/foundation-only base map first. Then perform the visual reference handoff and generate an in-world dressed reference mockup from the visible base before making final props and placements.
    - For tilemaps, generate or reuse tileset art first, then follow the engine/editor format for layers, objects, collision, and scene files. Do not script-draw the tileset as the final art source, and do not flatten object layers into a single runtime image.
@@ -204,7 +204,7 @@ Prop packs save image-generation calls and prompt overhead, but reduce per-prop 
 For layered maps with generated props, prefer this in-world reference mockup pipeline:
 
 1. Generate `assets/map/<name>-base.png` as ground-only terrain.
-2. Pass the base image via `--image` to `scripts/image_gen.py edit` for the next generation call; do not rely on a path string in the prompt text as the reference.
+2. Pass the base image via `--image` to `skills/imagegen/scripts/image_gen.py edit` for the next generation call; do not rely on a path string in the prompt text as the reference.
 3. In the dressed-reference prompt, explicitly say: use the visible base image immediately above as the visual reference, preserve its camera/framing/dimensions/terrain/road/water/boundaries, and generate an in-world dressed reference mockup.
 4. The dressed reference must show proposed props as natural game-world objects placed on the base. It must not contain circles, arrows, outlines, labels, text, callouts, legends, highlighted boxes, or other annotation graphics.
 5. The dressed reference should contain at most 9 distinct visible prop/object candidates unless the user explicitly asks for more. Prefer the objects that will become final generated props, collision blockers, interactables, or occluders.
@@ -222,12 +222,12 @@ An in-world reference mockup is never the final deliverable by itself. After gen
 1. Make both images visible in conversation context before any object/prop generation:
    - the original `base` or `background`
    - the generated `dressed-reference` or `stage-reference` mockup
-2. Pass both images via `--image` to `scripts/image_gen.py edit` when generating object/prop assets. Do not rely on file paths alone in the prompt text.
+2. Pass both images via `--image` to `skills/imagegen/scripts/image_gen.py edit` when generating object/prop assets. Do not rely on file paths alone in the prompt text.
 3. Create a concrete object list from the visible reference mockup while cross-checking the original base/background: object id, type, approximate position, approximate size, render layer, collision role, and asset strategy.
    - If the reference contains more than 9 distinct visible runtime object candidates, reduce the generated asset list to the 9 most gameplay-relevant candidates first, then represent extra repeats or low-value decorations through placement metadata or a later asset pass.
    - Classify every object before generation. Compact decorative props may be batched; wide/long, tall/large, collision-bearing, and tileset/strip objects must use one-by-one, strip, custom wide pack, tile/object-layer, or engine-native strategies.
 4. For each visible runtime object, choose exactly one asset strategy:
-   - generate a separate transparent asset with the generate2dsprite skill or direct `scripts/image_gen.py generate`
+   - generate a separate transparent asset with the generate2dsprite skill or direct `skills/imagegen/scripts/image_gen.py generate`
    - extract it from a generated prop/object pack
    - represent it as a tile/object layer if the engine/editor pipeline is tile-based
 5. For every object/prop image prompt, explicitly state that the visible original base/background and visible reference mockup above are the visual context. The generated asset must match the original map style and correspond to an object visible in the reference mockup.
@@ -252,7 +252,7 @@ For playable side-view scrolling/action maps, an in-world stage reference mockup
    - Repeatable strips and foreground/object sprites may have different source dimensions, but they must declare display size, anchor point, repeat axis, and scale in metadata. They are not substitutes for the primary parallax plates.
    - It must not contain walkable floors, platform tops, terrain chunks, spike traps, pickups, crates, doors, gates, checkpoints, ladders, near fences, near stone walls, enemies, player characters, UI, labels, or any object that should later be edited, collided with, reused, or layered independently.
    - Keep the playable foreground lane visually open or neutral so separate platform/object layers can stack clearly over it.
-2. Pass the background image via `--image` to `scripts/image_gen.py edit` for the stage-reference generation call; do not rely on a path string in the prompt text as the reference.
+2. Pass the background image via `--image` to `skills/imagegen/scripts/image_gen.py edit` for the stage-reference generation call; do not rely on a path string in the prompt text as the reference.
 3. In the stage-reference prompt, explicitly say: use the visible background image immediately above as the visual reference, preserve exact camera/framing/dimensions/horizon/depth/entrances/exit direction, and generate an in-world stage reference mockup.
 4. Generate `assets/map/<name>-stage-reference.png` from the visible background.
 5. In the stage reference, visually place the intended scene layout as natural game-world objects or subtle blockout geometry: platforms or walkable lanes, terrain chunks, foreground occluders, hazards, pickups, doors, checkpoints, gates, and exits.

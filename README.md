@@ -472,8 +472,20 @@ agent-sprite-forge/
   README.ja.md
   README.ko.md
   requirements.txt
+  image-gen.config.example.yaml
   src/
   skills/
+    imagegen/
+      SKILL.md
+      agents/
+        openai.yaml
+      references/
+        image-api.md
+        prompting.md
+        sample-prompts.md
+      scripts/
+        image_gen.py
+        remove_chroma_key.py
     generate2dmap/
       SKILL.md
       agents/

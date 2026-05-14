@@ -87,7 +87,7 @@ Deliver a fixed image plus optional coarse collision/zones only. Do not use this
 
 ## Visual Asset Source
 
-Default to `scripts/image_gen.py` for visual assets. Base maps, in-world reference mockups, dressed references, stage references, prop sheets, prop sprites, tileset art, parallax layers, and battle backgrounds should come from image generation unless the user supplies existing art or explicitly asks for procedural placeholders.
+Default to `skills/imagegen/scripts/image_gen.py` for visual assets. Base maps, in-world reference mockups, dressed references, stage references, prop sheets, prop sprites, tileset art, parallax layers, and battle backgrounds should come from image generation unless the user supplies existing art or explicitly asks for procedural placeholders.
 
 Scripts may slice, assemble, chroma-key, validate, compose previews, create metadata, and emit engine files. They must not replace image generation as the creative art source for final map visuals. Engine outputs such as Godot `.tscn`, Tiled JSON, LDtk data, or Unity placement data should wire up image-generated or user-supplied assets.
 
@@ -110,7 +110,7 @@ Use an in-world reference mockup whenever object placement must be visually cohe
 Reference mockups must be generated from the actual visible base/background image:
 
 1. Save the base/background image first.
-2. Pass the saved image via `--image` to `scripts/image_gen.py edit` for the reference-mockup generation call.
+2. Pass the saved image via `--image` to `skills/imagegen/scripts/image_gen.py edit` for the reference-mockup generation call.
 3. The next image prompt must explicitly say to use the visible image immediately above as the visual reference.
 4. The prompt must name concrete features from the viewed image to preserve: camera framing, dimensions, horizon, terrain boundaries, road/water shapes, entrances, exits, major silhouettes, and landmark positions.
 5. The prompt must ask for an in-world reference mockup, not an annotated planning diagram.
@@ -173,7 +173,7 @@ If a generated side-view background contains obvious foreground gameplay geometr
 
 After a dressed reference or stage reference exists, continue into final runtime production:
 
-1. Pass both the original base/background and the dressed/stage reference mockup via `--image` to `scripts/image_gen.py edit` when generating object/prop assets.
+1. Pass both the original base/background and the dressed/stage reference mockup via `--image` to `skills/imagegen/scripts/image_gen.py edit` when generating object/prop assets.
 2. Create a concrete object list from the visible reference mockup while cross-checking the original base/background: object id, type, approximate position, approximate size, render layer, collision role, and asset strategy.
 3. For each visible runtime object, generate a separate transparent asset, extract it from a generated pack, or represent it as a tile/object layer when the engine/editor pipeline is tile-based.
 4. Every object/prop image prompt must explicitly state that the visible original base/background and visible reference mockup above are the visual context. The generated asset must match the original map style and correspond to an object visible in the reference mockup.
