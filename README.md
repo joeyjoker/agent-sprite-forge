@@ -63,7 +63,7 @@ Agent Sprite Forge is not just a folder of prompts. It is an agent-driven 2D gam
 
 ### Engine-Ready Prototypes
 
-These examples were assembled with Codex using `agent-sprite-forge` workflows. They are meant to show the full loop: generated assets, structured scene data, and playable prototype wiring.
+These examples were assembled using `agent-sprite-forge` skill workflows. They demonstrate the full loop: generated assets, structured scene data, and playable prototype wiring.
 
 <table>
   <tr>
@@ -405,11 +405,11 @@ When a visual reference is involved, both skills follow the same wrapper rule: m
 
 ## How It Works
 
-1. The user asks Codex for a sprite, prop pack, map, or engine-ready prototype.
+1. The user asks the agent for a sprite, prop pack, map, or engine-ready prototype.
 2. The agent chooses the asset type, action, bundle shape, sheet layout, frame count, style, and alignment strategy.
-3. Built-in image generation creates the raw visual asset.
+3. GPT Image models (via OpenAI or Azure OpenAI) create the raw visual asset.
 4. Local scripts run deterministic post-processing: chroma-key cleanup, despill, frame extraction, alignment, prop-pack slicing, GIF/PNG export, and validation metadata.
-5. For maps and prototypes, Codex can also assemble placement metadata, collision, trigger zones, Godot scenes, or Unity project wiring.
+5. For maps and prototypes, the agent can also assemble placement metadata, collision, trigger zones, Godot scenes, or Unity project wiring.
 
 The script is not the creative brain. The agent makes the visual and pipeline decisions; the Python tools only perform repeatable pixel and export operations.
 
@@ -422,35 +422,35 @@ The script is not the creative brain. The agent makes the visual and pipeline de
 - Single baked maps, clean HD layered maps, prop-pack maps, and flattened previews
 - Collision and zone metadata for playable maps
 - Godot-ready editable maps with `TileMapLayer`, separate props, encounter grass, collision, exits, and debug player scenes
-- Prototype-scale Godot and Unity scenes when the user asks Codex to wire assets into an engine project
+- Prototype-scale Godot and Unity scenes when the user asks the agent to wire assets into an engine project
 
 ## Install
 
-### Option 1: Windows PowerShell
+### Prerequisites
 
-Clone the repo, install the local processor dependencies, then copy both skills into your Codex skills directory:
+- Python 3.10+
+- An [OpenAI](https://platform.openai.com/) or [Azure OpenAI](https://azure.microsoft.com/products/ai-services/openai-service) account with GPT Image model access
 
-```powershell
-git clone https://github.com/0x0funky/agent-sprite-forge.git
-cd .\agent-sprite-forge
-python -m pip install -r .\requirements.txt
-New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.codex\skills" | Out-Null
-Copy-Item -Recurse -Force `
-  ".\skills\*" `
-  "$env:USERPROFILE\.codex\skills\"
-```
-
-### Option 2: macOS / Linux
+### Setup
 
 ```bash
-git clone https://github.com/0x0funky/agent-sprite-forge.git
-cd ./agent-sprite-forge
-python3 -m pip install -r ./requirements.txt
-mkdir -p ~/.codex/skills
-cp -R ./skills/* ~/.codex/skills/
+git clone https://github.com/joeyjoker/agent-sprite-forge.git
+cd agent-sprite-forge
+pip install -r requirements.txt
+cp image-gen.config.example.yaml image-gen.config.yaml
+# Edit image-gen.config.yaml with your OpenAI or Azure OpenAI credentials
 ```
 
-Start a new Codex session after installation so the skills are loaded cleanly.
+### Loading skills into your agent
+
+The `skills/` directory contains agent skill definitions. How you load them depends on your agent platform:
+
+- **Claude Code**: Place skills under your project or reference them in your agent config
+- **Cursor / Windsurf**: Add the skill references to your workspace configuration
+- **Codex**: Copy to `~/.codex/skills/`
+- **Custom agents**: Point your skill loader at the `skills/` directory
+
+Restart your agent session after adding skills so they load cleanly.
 
 ## Python Requirements
 
@@ -459,7 +459,7 @@ The local post-processor depends on:
 - `Pillow`
 - `numpy`
 
-They are listed in [`requirements.txt`](./requirements.txt). Codex handles image generation itself, but these Python packages are still needed for magenta background removal, frame splitting, bounding-box extraction, alignment/rescaling, transparent GIF/PNG export, and prop-pack slicing.
+They are listed in [`requirements.txt`](./requirements.txt). Image generation is handled by GPT Image models via API, but these Python packages are still needed for magenta background removal, frame splitting, bounding-box extraction, alignment/rescaling, transparent GIF/PNG export, and prop-pack slicing.
 
 ## Repository Layout
 
@@ -560,11 +560,11 @@ For a map output, the result depends on the chosen pipeline:
 
 ## Star History
 
-<a href="https://www.star-history.com/?repos=0x0funky%2Fagent-sprite-forge&type=date&legend=top-left">
+<a href="https://www.star-history.com/?repos=joeyjoker%2Fagent-sprite-forge&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=0x0funky/agent-sprite-forge&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=0x0funky/agent-sprite-forge&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=0x0funky/agent-sprite-forge&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=joeyjoker/agent-sprite-forge&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=joeyjoker/agent-sprite-forge&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=joeyjoker/agent-sprite-forge&type=date&legend=top-left" />
  </picture>
 </a>
 

@@ -51,7 +51,7 @@ Agent Sprite Forge は単なる prompt 集ではありません。Agent 駆動�
 
 ### Engine-Ready Prototypes
 
-以下は Codex と `agent-sprite-forge` workflow で組み立てた例です。生成アセット、構造化されたシーンデータ、実際に遊べる prototype wiring までを示します。
+以下は `agent-sprite-forge` skill workflow で組み立てた例です。生成アセット、構造化されたシーンデータ、実際に遊べる prototype wiring までを示します。
 
 <table>
   <tr>
@@ -170,39 +170,41 @@ image_gen tileset + prop_pack_3x3 + layered_tilemap + separate_props + trigger_z
 
 ## How It Works
 
-1. ユーザーが Codex に sprite、prop pack、map、engine-ready prototype を依頼します。
+1. ユーザーが Agent に sprite、prop pack、map、engine-ready prototype を依頼します。
 2. Agent が asset type、action、bundle shape、sheet layout、frame count、style、alignment strategy を決めます。
-3. 内蔵画像生成が raw visual asset を作ります。
+3. GPT Image モデル（OpenAI または Azure OpenAI 経由）が raw visual asset を作ります。
 4. ローカルスクリプトが deterministic post-processing を行います：chroma-key cleanup、despill、frame extraction、alignment、prop-pack slicing、GIF/PNG export、validation metadata。
-5. マップや prototype では、placement metadata、collision、trigger zones、Godot scenes、Unity project wiring も Codex が組み立てられます。
+5. マップや prototype では、placement metadata、collision、trigger zones、Godot scenes、Unity project wiring も Agent が組み立てられます。
 
 スクリプトは創造部分を担当しません。視覚と pipeline の判断は Agent が行い、Python tools は再現可能な pixel/export 処理だけを担当します。
 
 ## Install
 
-### Windows PowerShell
+### 前提条件
 
-```powershell
-git clone https://github.com/0x0funky/agent-sprite-forge.git
-cd .\agent-sprite-forge
-python -m pip install -r .\requirements.txt
-New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.codex\skills" | Out-Null
-Copy-Item -Recurse -Force `
-  ".\skills\*" `
-  "$env:USERPROFILE\.codex\skills\"
-```
+- Python 3.10+
+- [OpenAI](https://platform.openai.com/) または [Azure OpenAI](https://azure.microsoft.com/products/ai-services/openai-service) アカウント（GPT Image モデルへのアクセス権が必要）
 
-### macOS / Linux
+### セットアップ
 
 ```bash
-git clone https://github.com/0x0funky/agent-sprite-forge.git
-cd ./agent-sprite-forge
-python3 -m pip install -r ./requirements.txt
-mkdir -p ~/.codex/skills
-cp -R ./skills/* ~/.codex/skills/
+git clone https://github.com/joeyjoker/agent-sprite-forge.git
+cd agent-sprite-forge
+pip install -r requirements.txt
+cp image-gen.config.example.yaml image-gen.config.yaml
+# image-gen.config.yaml に OpenAI または Azure OpenAI の認証情報を記入
 ```
 
-インストール後は、新しい Codex session を開始して skills を読み込み直してください。
+### Skills を agent に読み込む
+
+`skills/` ディレクトリに agent skill 定義があります。読み込み方法はお使いの agent プラットフォームによります：
+
+- **Claude Code**：プロジェクトディレクトリに配置するか agent 設定で参照
+- **Cursor / Windsurf**：workspace 設定に skill 参照を追加
+- **Codex**：`~/.codex/skills/` にコピー
+- **カスタム agent**：skill loader を `skills/` ディレクトリに向ける
+
+Skills 追加後は agent session を再起動して読み込みを確認してください。
 
 ## Suggested Prompts
 
@@ -259,11 +261,11 @@ map output は pipeline によって変わります：
 
 ## Star History
 
-<a href="https://www.star-history.com/?repos=0x0funky%2Fagent-sprite-forge&type=date&legend=top-left">
+<a href="https://www.star-history.com/?repos=joeyjoker%2Fagent-sprite-forge&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=0x0funky/agent-sprite-forge&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=0x0funky/agent-sprite-forge&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=0x0funky/agent-sprite-forge&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=joeyjoker/agent-sprite-forge&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=joeyjoker/agent-sprite-forge&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=joeyjoker/agent-sprite-forge&type=date&legend=top-left" />
  </picture>
 </a>
 

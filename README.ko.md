@@ -51,7 +51,7 @@ Agent Sprite Forge는 단순한 prompt 모음이 아닙니다. Agent 기반 2D �
 
 ### Engine-Ready Prototypes
 
-아래 예시는 Codex와 `agent-sprite-forge` workflow로 조립되었습니다. 생성된 에셋, 구조화된 scene data, 실제 플레이 가능한 prototype wiring까지 보여줍니다.
+아래 예시는 `agent-sprite-forge` skill workflow로 조립되었습니다. 생성된 에셋, 구조화된 scene data, 실제 플레이 가능한 prototype wiring까지 보여줍니다.
 
 <table>
   <tr>
@@ -170,39 +170,41 @@ image_gen tileset + prop_pack_3x3 + layered_tilemap + separate_props + trigger_z
 
 ## How It Works
 
-1. 사용자가 Codex에 sprite, prop pack, map, engine-ready prototype을 요청합니다.
+1. 사용자가 Agent에 sprite, prop pack, map, engine-ready prototype을 요청합니다.
 2. Agent가 asset type, action, bundle shape, sheet layout, frame count, style, alignment strategy를 결정합니다.
-3. 내장 이미지 생성이 raw visual asset을 만듭니다.
+3. GPT Image 모델(OpenAI 또는 Azure OpenAI 경유)이 raw visual asset을 만듭니다.
 4. 로컬 스크립트가 deterministic post-processing을 수행합니다: chroma-key cleanup, despill, frame extraction, alignment, prop-pack slicing, GIF/PNG export, validation metadata.
-5. map과 prototype의 경우 Codex가 placement metadata, collision, trigger zones, Godot scenes, Unity project wiring도 조립할 수 있습니다.
+5. map과 prototype의 경우 Agent가 placement metadata, collision, trigger zones, Godot scenes, Unity project wiring도 조립할 수 있습니다.
 
 스크립트는 창작의 중심이 아닙니다. 시각적 판단과 pipeline 결정은 Agent가 하고, Python tools는 반복 가능한 pixel/export 처리만 담당합니다.
 
 ## Install
 
-### Windows PowerShell
+### 사전 요구 사항
 
-```powershell
-git clone https://github.com/0x0funky/agent-sprite-forge.git
-cd .\agent-sprite-forge
-python -m pip install -r .\requirements.txt
-New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.codex\skills" | Out-Null
-Copy-Item -Recurse -Force `
-  ".\skills\*" `
-  "$env:USERPROFILE\.codex\skills\"
-```
+- Python 3.10+
+- [OpenAI](https://platform.openai.com/) 또는 [Azure OpenAI](https://azure.microsoft.com/products/ai-services/openai-service) 계정 (GPT Image 모델 접근 권한 필요)
 
-### macOS / Linux
+### 설치
 
 ```bash
-git clone https://github.com/0x0funky/agent-sprite-forge.git
-cd ./agent-sprite-forge
-python3 -m pip install -r ./requirements.txt
-mkdir -p ~/.codex/skills
-cp -R ./skills/* ~/.codex/skills/
+git clone https://github.com/joeyjoker/agent-sprite-forge.git
+cd agent-sprite-forge
+pip install -r requirements.txt
+cp image-gen.config.example.yaml image-gen.config.yaml
+# image-gen.config.yaml에 OpenAI 또는 Azure OpenAI 인증 정보를 입력하세요
 ```
 
-설치 후 새 Codex session을 시작해 skills를 다시 로드하세요.
+### Skills를 agent에 로드하기
+
+`skills/` 디렉토리에 agent skill 정의가 있습니다. 로드 방법은 사용하는 agent 플랫폼에 따라 다릅니다:
+
+- **Claude Code**: 프로젝트 디렉토리에 배치하거나 agent 설정에서 참조
+- **Cursor / Windsurf**: workspace 설정에 skill 참조 추가
+- **Codex**: `~/.codex/skills/`에 복사
+- **커스텀 agent**: skill loader를 `skills/` 디렉토리로 지정
+
+Skills 추가 후 agent session을 재시작하여 로드를 확인하세요.
 
 ## Suggested Prompts
 
@@ -259,11 +261,11 @@ map output은 선택한 pipeline에 따라 달라집니다:
 
 ## Star History
 
-<a href="https://www.star-history.com/?repos=0x0funky%2Fagent-sprite-forge&type=date&legend=top-left">
+<a href="https://www.star-history.com/?repos=joeyjoker%2Fagent-sprite-forge&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=0x0funky/agent-sprite-forge&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=0x0funky/agent-sprite-forge&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=0x0funky/agent-sprite-forge&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=joeyjoker/agent-sprite-forge&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=joeyjoker/agent-sprite-forge&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=joeyjoker/agent-sprite-forge&type=date&legend=top-left" />
  </picture>
 </a>
 

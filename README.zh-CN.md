@@ -51,7 +51,7 @@ Agent Sprite Forge 不是一组 prompt 模板。它是一套 agent 驱动的 2D 
 
 ### Engine-Ready Prototypes
 
-这些案例使用 Codex 和 `agent-sprite-forge` 工作流组装，重点是完整闭环：生成资产、结构化场景数据，以及可玩的 prototype wiring。
+这些案例使用 `agent-sprite-forge` skill 工作流组装，重点是完整闭环：生成资产、结构化场景数据，以及可玩的 prototype wiring。
 
 <table>
   <tr>
@@ -170,39 +170,41 @@ image_gen tileset + prop_pack_3x3 + layered_tilemap + separate_props + trigger_z
 
 ## How It Works
 
-1. 用户请 Codex 生成 sprite、prop pack、map 或 engine-ready prototype。
+1. 用户请 Agent 生成 sprite、prop pack、map 或 engine-ready prototype。
 2. Agent 判断 asset type、action、bundle shape、sheet layout、frame count、style 和 alignment strategy。
-3. 内置图像生成产出 raw visual asset。
+3. GPT Image 模型（通过 OpenAI 或 Azure OpenAI）产出 raw visual asset。
 4. 本地脚本做 deterministic post-processing：chroma-key cleanup、despill、frame extraction、alignment、prop-pack slicing、GIF/PNG export 和 validation metadata。
-5. 对地图和 prototype，Codex 也可以组装 placement metadata、collision、trigger zones、Godot scenes 或 Unity project wiring。
+5. 对地图和 prototype，Agent 也可以组装 placement metadata、collision、trigger zones、Godot scenes 或 Unity project wiring。
 
 脚本不是创意大脑。Agent 负责视觉和 pipeline 决策；Python 工具只做可重复的像素处理和导出。
 
 ## Install
 
-### Windows PowerShell
+### 前置条件
 
-```powershell
-git clone https://github.com/0x0funky/agent-sprite-forge.git
-cd .\agent-sprite-forge
-python -m pip install -r .\requirements.txt
-New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.codex\skills" | Out-Null
-Copy-Item -Recurse -Force `
-  ".\skills\*" `
-  "$env:USERPROFILE\.codex\skills\"
-```
+- Python 3.10+
+- [OpenAI](https://platform.openai.com/) 或 [Azure OpenAI](https://azure.microsoft.com/products/ai-services/openai-service) 账号，且有 GPT Image 模型访问权限
 
-### macOS / Linux
+### 安装步骤
 
 ```bash
-git clone https://github.com/0x0funky/agent-sprite-forge.git
-cd ./agent-sprite-forge
-python3 -m pip install -r ./requirements.txt
-mkdir -p ~/.codex/skills
-cp -R ./skills/* ~/.codex/skills/
+git clone https://github.com/joeyjoker/agent-sprite-forge.git
+cd agent-sprite-forge
+pip install -r requirements.txt
+cp image-gen.config.example.yaml image-gen.config.yaml
+# 编辑 image-gen.config.yaml 填入你的 OpenAI 或 Azure OpenAI 凭据
 ```
 
-安装后请重开 Codex session，让 skills 被干净载入。
+### 将 skills 载入你的 agent
+
+`skills/` 目录包含 agent skill 定义。载入方式取决于你使用的 agent 平台：
+
+- **Claude Code**：将 skills 放入项目目录或在 agent 配置中引用
+- **Cursor / Windsurf**：添加 skill 引用到 workspace 配置
+- **Codex**：复制到 `~/.codex/skills/`
+- **自定义 agent**：将 skill loader 指向 `skills/` 目录
+
+添加 skills 后重启 agent session 以确保加载成功。
 
 ## Suggested Prompts
 
@@ -259,11 +261,11 @@ Use $generate2dmap to create a playable side_scroll_mode platformer stage with p
 
 ## Star History
 
-<a href="https://www.star-history.com/?repos=0x0funky%2Fagent-sprite-forge&type=date&legend=top-left">
+<a href="https://www.star-history.com/?repos=joeyjoker%2Fagent-sprite-forge&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=0x0funky/agent-sprite-forge&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=0x0funky/agent-sprite-forge&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=0x0funky/agent-sprite-forge&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=joeyjoker/agent-sprite-forge&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=joeyjoker/agent-sprite-forge&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=joeyjoker/agent-sprite-forge&type=date&legend=top-left" />
  </picture>
 </a>
 

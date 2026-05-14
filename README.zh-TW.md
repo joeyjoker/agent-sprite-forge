@@ -63,7 +63,7 @@ Agent Sprite Forge 不是單純的 prompt 集合。它是一組 agent 驅動的 
 
 ### Engine-Ready Prototypes
 
-這些範例都是用 Codex 搭配 `agent-sprite-forge` workflow 做出的成果。重點不是單張圖，而是完整流程：生成素材、整理 scene data，並接到可玩的 prototype 或可編輯的 engine scene。
+這些範例都是用 `agent-sprite-forge` skill workflow 做出的成果。重點不是單張圖，而是完整流程：生成素材、整理 scene data，並接到可玩的 prototype 或可編輯的 engine scene。
 
 <table>
   <tr>
@@ -405,11 +405,11 @@ Use $generate2dsprite to create a 2D game similar to Pokemon. You only need to b
 
 ## 運作方式
 
-1. 使用者請 Codex 生成 sprite、prop pack、地圖或 engine-ready prototype。
+1. 使用者請 Agent 生成 sprite、prop pack、地圖或 engine-ready prototype。
 2. Agent 決定 asset type、action、bundle shape、sheet layout、frame count、style 與 alignment strategy。
-3. Codex 內建 image generation 產生 raw visual asset。
+3. GPT Image 模型（透過 OpenAI 或 Azure OpenAI）產生 raw visual asset。
 4. 本地 scripts 做 deterministic post-processing：洋紅去背、despill、切格、對齊、prop-pack slicing、GIF / PNG export 與 validation metadata。
-5. 對地圖或 prototype，Codex 也可以組裝 placement metadata、collision、trigger zones、Godot scenes 或 Unity project wiring。
+5. 對地圖或 prototype，Agent 也可以組裝 placement metadata、collision、trigger zones、Godot scenes 或 Unity project wiring。
 
 Script 不是創意大腦。Agent 負責美術與 pipeline 決策，Python tools 只負責可重現的像素處理與輸出。
 
@@ -422,35 +422,35 @@ Script 不是創意大腦。Agent 負責美術與 pipeline 決策，Python tools
 - Single baked map、clean HD layered map、prop-pack map 與 flattened preview
 - 可玩地圖用的 collision / zone metadata
 - Godot 可開啟調整的地圖工程，包含 `TileMapLayer`、分離式 props、遇怪草叢、collision、出口區與 debug player scene
-- 當使用者要求接 engine 時，也可以協助組出 prototype-scale Godot / Unity scene
+- 當使用者要求接 engine 時，Agent 也可以協助組出 prototype-scale Godot / Unity scene
 
 ## 安裝方式
 
-### Option 1: Windows PowerShell
+### 前置條件
 
-先 clone repo，安裝本地 processor 依賴，再把兩個 skills 複製到 Codex skills 目錄：
+- Python 3.10+
+- [OpenAI](https://platform.openai.com/) 或 [Azure OpenAI](https://azure.microsoft.com/products/ai-services/openai-service) 帳號，且具備 GPT Image 模型存取權限
 
-```powershell
-git clone https://github.com/0x0funky/agent-sprite-forge.git
-cd .\agent-sprite-forge
-python -m pip install -r .\requirements.txt
-New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.codex\skills" | Out-Null
-Copy-Item -Recurse -Force `
-  ".\skills\*" `
-  "$env:USERPROFILE\.codex\skills\"
-```
-
-### Option 2: macOS / Linux
+### 安裝步驟
 
 ```bash
-git clone https://github.com/0x0funky/agent-sprite-forge.git
-cd ./agent-sprite-forge
-python3 -m pip install -r ./requirements.txt
-mkdir -p ~/.codex/skills
-cp -R ./skills/* ~/.codex/skills/
+git clone https://github.com/joeyjoker/agent-sprite-forge.git
+cd agent-sprite-forge
+pip install -r requirements.txt
+cp image-gen.config.example.yaml image-gen.config.yaml
+# 編輯 image-gen.config.yaml 填入你的 OpenAI 或 Azure OpenAI 憑證
 ```
 
-安裝完後建議重新開一個新的 Codex session，讓 skills 重新載入。
+### 將 skills 載入你的 agent
+
+`skills/` 目錄包含 agent skill 定義。載入方式取決於你使用的 agent 平台：
+
+- **Claude Code**：將 skills 放入專案目錄或在 agent 設定中引用
+- **Cursor / Windsurf**：將 skill 引用加到 workspace 設定
+- **Codex**：複製到 `~/.codex/skills/`
+- **自訂 agent**：將 skill loader 指向 `skills/` 目錄
+
+新增 skills 後請重啟 agent session 以確保載入成功。
 
 ## Python 依賴
 
@@ -459,7 +459,7 @@ cp -R ./skills/* ~/.codex/skills/
 - `Pillow`
 - `numpy`
 
-這些都列在 [`requirements.txt`](./requirements.txt)。雖然 Codex 本身負責生圖，但你仍然需要這些 Python 套件完成洋紅去背、切格、主體 bbox 偵測、對齊 / 縮放、透明 PNG / GIF 輸出，以及 prop-pack slicing。
+這些都列在 [`requirements.txt`](./requirements.txt)。生圖由 GPT Image 模型透過 API 處理，但你仍然需要這些 Python 套件完成洋紅去背、切格、主體 bbox 偵測、對齊 / 縮放、透明 PNG / GIF 輸出，以及 prop-pack slicing。
 
 ## Repo 結構
 
@@ -557,11 +557,11 @@ Use $generate2dmap to create a Godot-editable RPG map with separated props, enco
 
 ## Star History
 
-<a href="https://www.star-history.com/?repos=0x0funky%2Fagent-sprite-forge&type=date&legend=top-left">
+<a href="https://www.star-history.com/?repos=joeyjoker%2Fagent-sprite-forge&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=0x0funky/agent-sprite-forge&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=0x0funky/agent-sprite-forge&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=0x0funky/agent-sprite-forge&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=joeyjoker/agent-sprite-forge&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=joeyjoker/agent-sprite-forge&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=joeyjoker/agent-sprite-forge&type=date&legend=top-left" />
  </picture>
 </a>
 
