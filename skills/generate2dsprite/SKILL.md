@@ -1,6 +1,6 @@
 ---
 name: generate2dsprite
-description: "Generate and postprocess general 2D game assets and animation sheets: pixel-art sprites, clean HD map props, creatures, characters, NPCs, spells, projectiles, impacts, props, summons, and transparent GIF exports. Use when Codex should infer the asset plan from a natural-language request, match a reference or map art style, call built-in `image_gen` for solid-magenta raw sheets, and use the local processor only for chroma-key cleanup, frame extraction, alignment, QC, and transparent exports."
+description: "Generate and postprocess general 2D game assets and animation sheets: pixel-art sprites, clean HD map props, creatures, characters, NPCs, spells, projectiles, impacts, props, summons, and transparent GIF exports. Infers the asset plan from a natural-language request, matches a reference or map art style, calls `scripts/image_gen.py generate` for solid-magenta raw sheets, and uses the local processor only for chroma-key cleanup, frame extraction, alignment, QC, and transparent exports."
 ---
 
 # Generate2dsprite
@@ -39,10 +39,10 @@ Read [references/modes.md](references/modes.md) when the request is ambiguous.
 - For controllable heroes, main characters, and high-value player body actions, default attack/shoot/cast body sheets to body-only. Do not include large slash arcs, muzzle flashes, projectiles, impact bursts, detached dust, long trails, or wide detached FX in the body sheet. Generate those as separate `fx`, `projectile`, or `impact` sheets and layer them in the game.
 - Only include wide attack FX in the same raw body sheet when the target runtime explicitly supports wider per-action cells plus per-action origin/anchor metadata. Otherwise, a wide FX bbox will force the body to shrink inside the fixed cell.
 - Write the art prompt yourself. Do not default to the prompt-builder script.
-- Use built-in `image_gen` for every raw image.
-- Do not create raw sprite art with Three.js, Canvas, SVG, HTML/CSS drawing, PIL shape drawing, procedural geometry, placeholder primitives, or code-rendered screenshots. Runtime code may display finished generated assets, and scripts may make layout guides or postprocess generated images, but requested sprite art must originate from built-in `image_gen`.
-- When the user provides or implies a visual reference, use built-in image edit/reference semantics only after the reference image is visible in the conversation context. If the reference is a local file, call `view_image` first; do not rely on a filesystem path in the prompt as the visual reference.
-- Do not force pixel art when the asset is a map prop for `$generate2dmap` or when the user/project requests a different style. Match the map or reference style first.
+- Use `scripts/image_gen.py generate` for every raw image.
+- Do not create raw sprite art with Three.js, Canvas, SVG, HTML/CSS drawing, PIL shape drawing, procedural geometry, placeholder primitives, or code-rendered screenshots. Runtime code may display finished generated assets, and scripts may make layout guides or postprocess generated images, but requested sprite art must originate from `scripts/image_gen.py generate`.
+- When the user provides or implies a visual reference, pass the reference image via `--image` to `scripts/image_gen.py edit`. Do not rely on a filesystem path in the prompt text as the visual reference.
+- Do not force pixel art when the asset is a map prop for the generate2dmap skill or when the user/project requests a different style. Match the map or reference style first.
 - Use the script only as a deterministic processor: magenta cleanup, frame splitting, component filtering, scaling, alignment, QC metadata, transparent sheet export, and GIF export.
 - Do not use scripts to generate the creative image prompt. If a legacy prompt-builder command exists, treat it as historical compatibility only, not the normal skill workflow.
 - Layout guides are allowed only as deterministic geometry references for image generation. They may show slot count, spacing, centering, and safe padding, but must never define the creative art direction.
@@ -99,7 +99,7 @@ Choose `art_style` before writing the prompt:
 
 If a reference is involved:
 
-- Make the reference visible first. For local paths, use `view_image`; for freshly generated references, rely on the image already shown in context.
+- Make the reference visible first. For local paths, pass the image via `--image` to `scripts/image_gen.py edit`; for freshly generated references, rely on the image already shown in context.
 - State the reference role explicitly: preserve identity/style, create an animation sheet for the same subject, create an evolution/variant, or derive a matching prop/FX.
 - Preserve the stable identity markers from the reference: silhouette, palette, face/eye features, costume marks, major accessories, and material language.
 - Let only the requested action or evolution change. Do not redesign the subject unless the user asks.
@@ -142,7 +142,7 @@ Map prop pack guardrail:
 - Use custom wide cells for multiple similar wide objects. The grid must state explicit non-square cell dimensions and must not mix compact props with platform/terrain objects.
 - If a square prop pack fails due to edge touch or bad cropping, do not solve it by relaxing QC. Reclassify the object and regenerate with a more suitable sheet shape.
 
-If a layout guide is useful, generate one before calling built-in `image_gen`:
+If a layout guide is useful, generate one before calling `scripts/image_gen.py generate`:
 
 ```bash
 python scripts/make_layout_guide.py \
@@ -163,13 +163,13 @@ Use layout guides deliberately:
 
 ### 3. Generate the raw image
 
-Use built-in `image_gen`.
+Use `scripts/image_gen.py generate`.
 
 Do not use Three.js, Canvas, SVG, HTML/CSS, PIL drawing, or other code-generated art as the raw sprite source. These are acceptable only for runtime display, debug overlays, deterministic layout guides, or postprocessing already-generated images.
 
 After generation:
 
-- find the raw PNG under `$CODEX_HOME/generated_images/...`
+- find the raw PNG at the `--out` path specified in the generate command
 - copy or reference it from the working output folder
 - keep the original generated image in place
 
@@ -261,3 +261,5 @@ For `hero_action_bundle`, expect:
 - `references/modes.md`: asset, action, bundle, and sheet selection
 - `references/prompt-rules.md`: manual prompt patterns and containment rules
 - `scripts/generate2dsprite.py`: postprocess primitive for cleanup, extraction, alignment, QC, and GIF export
+- `scripts/image_gen.py`: image generation and editing via `generate` and `edit` subcommands
+- `scripts/remove_chroma_key.py`: magenta background removal utility

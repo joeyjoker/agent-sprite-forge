@@ -1,0 +1,7 @@
+interface:
+  display_name: "Image Generation"
+  short_description: "Generate, edit, and batch-process images via gpt-image-2 (OpenAI or Azure)."
+  default_prompt: "Use the imagegen skill to generate or edit images with scripts/image_gen.py; for generation use the generate subcommand with --prompt and --out; for editing an existing image use the edit subcommand with --image, --prompt, and --out; for batch generation use generate-batch with --prompts-file and --out-dir; use scripts/remove_chroma_key.py to remove solid-magenta backgrounds from generated assets and produce transparent PNGs; read references/image-api.md for full CLI flags and references/prompting.md for prompt best practices."
+
+policy:
+  allow_implicit_invocation: true

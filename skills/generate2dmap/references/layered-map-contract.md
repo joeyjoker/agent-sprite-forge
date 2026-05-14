@@ -31,7 +31,7 @@ If the user wants a pixel-adjacent look, use `clean modern pixel-art-inspired` a
 
 ## Prop Generation
 
-Use `$generate2dsprite` when the map needs reusable transparent props. Choose one of two approaches:
+Use the generate2dsprite skill when the map needs reusable transparent props. Choose one of two approaches:
 
 - One-by-one props: safest for large, important, irregular, animated, or identity-critical props.
 - Prop packs: faster for sets of small/medium static environmental props.
@@ -43,7 +43,7 @@ Read [prop-pack-contract.md](prop-pack-contract.md) before batching props.
 For generated layered raster maps, use a dressed reference pass before final prop extraction:
 
 1. Generate the base as ground-only terrain.
-2. Make the base visible to built-in `image_gen`. If the base exists as a local file, call `view_image` first; do not expect a filesystem path in the prompt to work as the visual reference.
+2. Pass the base image via `--image` to `scripts/image_gen.py edit` for the dressed-reference call. Do not expect a filesystem path in the prompt text to work as the visual reference.
 3. Ask for a dressed-reference version of the same map by adding props only.
 4. Preserve exact camera, framing, dimensions, terrain, paths, water, anchor pads, collision-relevant boundaries, and map edges.
 5. Use the dressed reference to choose prop identities and placement coordinates, but compose the final runtime preview from the original base plus extracted transparent props.

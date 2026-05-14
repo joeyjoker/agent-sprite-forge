@@ -54,7 +54,7 @@ If a square pack fails because a wide/tall object touches the cell edge, do not 
 
 ## Prompt Pattern
 
-For `3x3` and `4x4` packs, create a layout-only guide first with `$generate2dsprite`:
+For `3x3` and `4x4` packs, create a layout-only guide first with the generate2dsprite skill:
 
 ```bash
 python skills/generate2dsprite/scripts/make_layout_guide.py \
@@ -111,7 +111,7 @@ Use `1x4` only for non-actor platform strips when a slope, corner, broken varian
 Before extraction, run a chroma-key cleanup pass when the sheet has antialiased magenta fringe or when the props will be composited over a dark/detailed base. This is often better than direct hard-key extraction:
 
 ```bash
-python $CODEX_HOME/skills/.system/imagegen/scripts/remove_chroma_key.py \
+python scripts/remove_chroma_key.py \
   --input assets/props/raw/forest-props-sheet.png \
   --out assets/props/raw/forest-props-sheet-alpha.png \
   --key-color '#ff00ff' \

@@ -1,0 +1,26 @@
+# Image generation configuration
+# Copy this file to image-gen.config.yaml and fill in your credentials.
+# Environment variable references like ${VAR_NAME} are expanded at load time.
+
+# Provider: openai | azure
+provider: openai
+
+# OpenAI direct API
+openai:
+  api_key: "${OPENAI_API_KEY}"
+  model: gpt-image-2
+  # Optional: proxy or compatible endpoint
+  # base_url: https://api.openai.com/v1
+
+# Azure OpenAI
+azure:
+  api_key: "${AZURE_OPENAI_API_KEY}"
+  endpoint: "https://your-resource.openai.azure.com"
+  deployment: "gpt-image-2"
+  api_version: "2025-04-01-preview"
+
+# Default parameters (overridden by CLI flags)
+defaults:
+  size: auto
+  quality: medium
+  output_format: png

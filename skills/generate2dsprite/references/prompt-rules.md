@@ -18,7 +18,7 @@ Always keep these constraints:
 - no borders or frames between cells
 - same asset identity across frames
 - same bounding box and same pixel scale across frames
-- raw sprite art must come from built-in `image_gen`, not Three.js, Canvas, SVG, HTML/CSS drawing, PIL shape drawing, procedural geometry, placeholder primitives, or code-rendered screenshots
+- raw sprite art must come from `scripts/image_gen.py generate`, not Three.js, Canvas, SVG, HTML/CSS drawing, PIL shape drawing, procedural geometry, placeholder primitives, or code-rendered screenshots
 
 ## Style Rules
 
@@ -28,7 +28,7 @@ Choose the art style from the user request, project context, map context, or ref
 - `clean_hd`: clean hand-painted HD 2D game asset style, crisp silhouettes, smooth surfaces, low texture noise, controlled lighting, no chunky pixels.
 - `pixel_inspired`: clean modern pixel-art-inspired style without 16-bit wording, heavy dithering, or noisy microtexture.
 - `retro_pixel`: 16-bit pixel art or retro JRPG pixel art, only when explicitly requested.
-- `map_style` or `project-native`: match the visible reference, existing game, or `$generate2dmap` selected art style.
+- `map_style` or `project-native`: match the visible reference, existing game, or the generate2dmap skill's selected art style.
 
 Do not write `16-bit`, `retro JRPG`, or `chunky pixel-art` unless the user asks for that look. For clean HD map props, explicitly say `Do not make pixel art`.
 
@@ -36,7 +36,7 @@ Do not write `16-bit`, `retro JRPG`, or `chunky pixel-art` unless the user asks 
 
 Use these rules when the user attaches a reference, points to a local image, asks for consistency with an earlier generated image, or asks for an evolution/variant of an existing sprite:
 
-- Make the reference image visible to built-in `image_gen` before generation. If the reference is a local file, call `view_image` first; do not assume a path string is a visual input.
+- Pass the reference image via `--image` to `scripts/image_gen.py edit` before generation. Do not assume a path string in the prompt text is a visual input.
 - In the prompt, say `use the image just shown as the visual reference`.
 - State what must stay fixed: silhouette family, palette, face/eyes, costume or markings, accessories, material language, and art style.
 - State what may change: pose, animation phase, action energy, size progression, evolution traits, or FX intensity.
@@ -95,7 +95,7 @@ For `player` and `npc` when the request does not specify another style:
 
 ## Map Prop Style
 
-For `prop` assets requested by `$generate2dmap`, match the selected map art style:
+For `prop` assets requested by the generate2dmap skill, match the selected map art style:
 
 - `clean_hd`: clean hand-painted HD 2D game asset style, crisp silhouettes, smooth painted surfaces, low texture noise, controlled accent lighting, no chunky pixels.
 - `pixel_inspired`: clean modern pixel-art-inspired prop, crisp readable shape, no 16-bit wording, no heavy dithering.
