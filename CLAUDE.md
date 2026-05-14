@@ -18,18 +18,22 @@ requirements.txt        — Python dependencies
 
 ## Configuration
 
-Copy `image-gen.config.example.yaml` to `image-gen.config.yaml` and fill in credentials. The config supports environment variable expansion (`${VAR_NAME}`).
+Set credentials via environment variables or a `.env` file in `skills/imagegen/scripts/`:
 
-Provider options: `openai` (direct API) or `azure` (Azure OpenAI endpoint).
+```bash
+cp skills/imagegen/scripts/.env.example skills/imagegen/scripts/.env
+# Edit .env with your credentials
+```
 
-Config search order: `--config` CLI flag > `IMAGE_GEN_CONFIG` env var > `./image-gen.config.yaml` > skill root directory.
+Provider options: `openai` (direct API) or `azure` (Azure OpenAI endpoint) — set `IMAGE_GEN_PROVIDER`.
+
+Priority: environment variables > `.env` file values.
 
 ## Quick start
 
 ```bash
 pip install -r requirements.txt
-cp image-gen.config.example.yaml image-gen.config.yaml
-# Edit image-gen.config.yaml with your credentials
+export OPENAI_API_KEY=sk-your-key  # or use .env file
 
 python skills/imagegen/scripts/image_gen.py generate --prompt "a pixel art sword" --out sword.png
 python skills/imagegen/scripts/image_gen.py edit --image sword.png --prompt "add a glow effect" --out sword-glow.png

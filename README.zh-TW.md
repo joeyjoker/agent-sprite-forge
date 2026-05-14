@@ -438,8 +438,8 @@ Script 不是創意大腦。Agent 負責美術與 pipeline 決策，Python tools
 git clone https://github.com/joeyjoker/agent-sprite-forge.git
 cd agent-sprite-forge
 pip install -r requirements.txt
-cp image-gen.config.example.yaml image-gen.config.yaml
-# 編輯 image-gen.config.yaml 填入你的 OpenAI 或 Azure OpenAI 憑證
+cp skills/imagegen/scripts/.env.example skills/imagegen/scripts/.env
+# 編輯 .env 填入你的 OpenAI 或 Azure OpenAI 憑證
 ```
 
 ### 將 skills 載入你的 agent

@@ -192,8 +192,8 @@ image_gen tileset + prop_pack_3x3 + layered_tilemap + separate_props + trigger_z
 git clone https://github.com/joeyjoker/agent-sprite-forge.git
 cd agent-sprite-forge
 pip install -r requirements.txt
-cp image-gen.config.example.yaml image-gen.config.yaml
-# 编辑 image-gen.config.yaml 填入你的 OpenAI 或 Azure OpenAI 凭据
+cp skills/imagegen/scripts/.env.example skills/imagegen/scripts/.env
+# 编辑 .env 填入你的 OpenAI 或 Azure OpenAI 凭据
 ```
 
 ### 将 skills 载入你的 agent

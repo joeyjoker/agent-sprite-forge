@@ -438,8 +438,8 @@ The script is not the creative brain. The agent makes the visual and pipeline de
 git clone https://github.com/joeyjoker/agent-sprite-forge.git
 cd agent-sprite-forge
 pip install -r requirements.txt
-cp image-gen.config.example.yaml image-gen.config.yaml
-# Edit image-gen.config.yaml with your OpenAI or Azure OpenAI credentials
+cp skills/imagegen/scripts/.env.example skills/imagegen/scripts/.env
+# Edit .env with your OpenAI or Azure OpenAI credentials
 ```
 
 ### Loading skills into your agent
@@ -472,7 +472,6 @@ agent-sprite-forge/
   README.ja.md
   README.ko.md
   requirements.txt
-  image-gen.config.example.yaml
   src/
   skills/
     imagegen/
@@ -486,6 +485,7 @@ agent-sprite-forge/
       scripts/
         image_gen.py
         remove_chroma_key.py
+        .env.example
     generate2dmap/
       SKILL.md
       agents/

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """CLI for image generation and editing with GPT Image models.
 
-Supports OpenAI and Azure OpenAI endpoints via a YAML configuration file.
+Supports OpenAI and Azure OpenAI endpoints via environment variables or a .env file.
 """
 
 from __future__ import annotations
@@ -54,66 +54,57 @@ def _warn(message: str) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Configuration loading
+# Configuration loading (.env + environment variables)
 # ---------------------------------------------------------------------------
 
-def _expand_env_vars(value: Any) -> Any:
-    if isinstance(value, str):
-        return re.sub(
-            r"\$\{([^}]+)\}",
-            lambda m: os.environ.get(m.group(1), ""),
-            value,
-        )
-    if isinstance(value, dict):
-        return {k: _expand_env_vars(v) for k, v in value.items()}
-    if isinstance(value, list):
-        return [_expand_env_vars(item) for item in value]
-    return value
+def _load_dotenv() -> None:
+    """Load .env from the script's directory. Existing env vars take precedence."""
+    env_file = Path(__file__).resolve().parent / ".env"
+    if not env_file.exists():
+        return
+    for line in env_file.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        key = key.strip()
+        value = value.strip()
+        if value and value[0] in ('"', "'") and value[-1] == value[0] and len(value) >= 2:
+            value = value[1:-1]
+        if key and key not in os.environ:
+            os.environ[key] = value
 
 
-def _find_config(explicit_path: Optional[str]) -> Optional[Path]:
-    if explicit_path:
-        p = Path(explicit_path)
-        if p.exists():
-            return p
-        _die(f"Config file not found: {p}")
-
-    env_path = os.environ.get("IMAGE_GEN_CONFIG")
-    if env_path:
-        p = Path(env_path)
-        if p.exists():
-            return p
-
-    candidates = [
-        Path.cwd() / "image-gen.config.yaml",
-        Path(__file__).resolve().parent.parent / "image-gen.config.yaml",
-    ]
-    for candidate in candidates:
-        if candidate.exists():
-            return candidate
-
-    return None
-
-
-def _load_config(explicit_path: Optional[str] = None) -> Dict[str, Any]:
+def _load_config() -> Dict[str, Any]:
     global _config_cache
     if _config_cache is not None:
         return _config_cache
 
-    config_path = _find_config(explicit_path)
-    if config_path is None:
-        _config_cache = {}
-        return _config_cache
+    _load_dotenv()
 
-    try:
-        import yaml
-    except ImportError:
-        _die("pyyaml is required for config file support. Install with: pip install pyyaml")
+    provider = os.environ.get("IMAGE_GEN_PROVIDER", "openai").lower()
 
-    raw = config_path.read_text(encoding="utf-8")
-    data = yaml.safe_load(raw) or {}
-    _config_cache = _expand_env_vars(data)
-    print(f"Loaded config from {config_path}", file=sys.stderr)
+    _config_cache = {
+        "provider": provider,
+        "openai": {
+            "api_key": os.environ.get("OPENAI_API_KEY", ""),
+            "base_url": os.environ.get("OPENAI_BASE_URL", ""),
+            "model": os.environ.get("OPENAI_MODEL", DEFAULT_MODEL),
+        },
+        "azure": {
+            "api_key": os.environ.get("AZURE_OPENAI_API_KEY", ""),
+            "endpoint": os.environ.get("AZURE_OPENAI_ENDPOINT", ""),
+            "api_version": os.environ.get("AZURE_OPENAI_API_VERSION", "2025-04-01-preview"),
+            "deployment": os.environ.get("AZURE_OPENAI_DEPLOYMENT", DEFAULT_MODEL),
+        },
+        "defaults": {
+            "size": os.environ.get("IMAGE_GEN_DEFAULT_SIZE", DEFAULT_SIZE),
+            "quality": os.environ.get("IMAGE_GEN_DEFAULT_QUALITY", DEFAULT_QUALITY),
+            "output_format": os.environ.get("IMAGE_GEN_DEFAULT_FORMAT", DEFAULT_OUTPUT_FORMAT),
+        },
+    }
     return _config_cache
 
 
@@ -944,7 +935,6 @@ def _edit(args: argparse.Namespace, config: Dict[str, Any]) -> None:
 # ---------------------------------------------------------------------------
 
 def _add_shared_args(parser: argparse.ArgumentParser) -> None:
-    parser.add_argument("--config", help="Path to image-gen.config.yaml")
     parser.add_argument("--model", default=DEFAULT_MODEL)
     parser.add_argument("--prompt")
     parser.add_argument("--prompt-file")
@@ -1018,7 +1008,7 @@ def main() -> int:
     if getattr(args, "downscale_max_dim", None) is not None and args.downscale_max_dim < 1:
         _die("--downscale-max-dim must be >= 1")
 
-    config = _load_config(getattr(args, "config", None))
+    config = _load_config()
 
     cfg_defaults = config.get("defaults", {}) if config else {}
     if args.size is None:
