@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  用自然语言描述需求，Agent 负责规划资产流程，通过 GPT Image 模型（gpt-image-1）生成原始图像，再用本地处理器去背、切格、对齐、验证，并导出给 Godot、Unity 或普通 2D 游戏项目使用。
+  用自然语言描述需求，Agent 负责规划资产流程，通过 GPT Image 系列模型（gpt-image-1 / 1-mini / 1.5 / 2 等）生成原始图像，再用本地处理器去背、切格、对齐、验证，并导出给 Godot、Unity 或普通 2D 游戏项目使用。
 </p>
 
 <p align="center">
@@ -163,6 +163,7 @@ image_gen tileset + prop_pack_3x3 + layered_tilemap + separate_props + trigger_z
 
 | Skill | 用途 | 输出 |
 | --- | --- | --- |
+| [`imagegen`](./skills/imagegen) | 通用图像生成与编辑 — 照片、插画、纹理、UI 原型、Logo、任何位图视觉素材 | 生成 / 编辑后的 PNG 图像 |
 | [`generate2dsprite`](./skills/generate2dsprite) | Sprites、animation sheets、props、spell bundles、FX、参考图变体、固定 frame sheet 的 layout guide | raw sheet、cleaned transparent sheet、frames、GIFs、metadata |
 | [`generate2dmap`](./skills/generate2dmap) | baked maps、layered raster maps、clean HD RPG maps、prop packs、collision/zones、Godot-editable scenes、side-scroll/parallax scenes | base map、dressed/stage reference、prop pack、extracted props、preview、scene metadata |
 

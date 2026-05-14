@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  자연어로 요청하면 Agent가 에셋 파이프라인을 계획하고, GPT Image 모델(gpt-image-1)로 원본 비주얼을 만든 뒤, 로컬 프로세서가 배경 제거, 프레임 분할, 정렬, 검증, Godot / Unity / 일반 2D 게임 워크플로용 내보내기를 수행합니다.
+  자연어로 요청하면 Agent가 에셋 파이프라인을 계획하고, GPT Image 시리즈 모델(gpt-image-1 / 1-mini / 1.5 / 2 등)로 원본 비주얼을 만든 뒤, 로컬 프로세서가 배경 제거, 프레임 분할, 정렬, 검증, Godot / Unity / 일반 2D 게임 워크플로용 내보내기를 수행합니다.
 </p>
 
 <p align="center">
@@ -163,6 +163,7 @@ image_gen tileset + prop_pack_3x3 + layered_tilemap + separate_props + trigger_z
 
 | Skill | 용도 | 출력 |
 | --- | --- | --- |
+| [`imagegen`](./skills/imagegen) | 범용 이미지 생성 및 편집 — 사진, 일러스트, 텍스처, UI 목업, 로고, 모든 비트맵 비주얼 | 생성 / 편집된 PNG 이미지 |
 | [`generate2dsprite`](./skills/generate2dsprite) | sprites, animation sheets, props, spell bundles, FX, reference variants, fixed-frame sheets용 layout guides | raw sheet, cleaned transparent sheet, frames, GIFs, metadata |
 | [`generate2dmap`](./skills/generate2dmap) | baked maps, layered raster maps, clean HD RPG maps, prop packs, collision/zones, Godot-editable scenes, side-scroll/parallax scenes | base map, dressed/stage reference, prop pack, extracted props, preview, scene metadata |
 

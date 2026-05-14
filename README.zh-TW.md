@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  用自然語言下需求。Agent 負責規劃資產 pipeline、透過 GPT Image 模型（gpt-image-1）生圖，再由本地 processor 去背、切格、驗證與輸出，讓素材可以進 Godot、Unity 或一般 2D game workflow。
+  用自然語言下需求。Agent 負責規劃資產 pipeline、透過 GPT Image 系列模型（gpt-image-1 / 1-mini / 1.5 / 2 等）生圖，再由本地 processor 去背、切格、驗證與輸出，讓素材可以進 Godot、Unity 或一般 2D game workflow。
 </p>
 
 <p align="center">
@@ -396,6 +396,7 @@ Use $generate2dsprite to create a 2D game similar to Pokemon. You only need to b
 
 | Skill | 適合用途 | 輸出 |
 | --- | --- | --- |
+| [`imagegen`](./skills/imagegen) | 通用圖像生成與編輯 — 照片、插畫、紋理、UI 原型、Logo、任何點陣圖視覺素材 | 生成 / 編輯後的 PNG 圖像 |
 | [`generate2dsprite`](./skills/generate2dsprite) | Sprites、animation sheets、props、spell bundles、FX、reference variants、固定 frame sheet 可選 layout guides | Raw sheet、cleaned transparent sheet、frames、GIFs、metadata |
 | [`generate2dmap`](./skills/generate2dmap) | Baked maps、layered raster maps、clean HD RPG maps、prop packs、collision / zones、Godot-editable scenes | Base map、dressed reference、prop pack、extracted props、preview、scene metadata |
 

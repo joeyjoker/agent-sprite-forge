@@ -13,7 +13,7 @@ Languages: [English](./README.md) | [繁體中文](./README.zh-TW.md) | [简体�
 </p>
 
 <p align="center">
-  Ask in natural language. Your agent plans the asset pipeline, renders with GPT Image models (gpt-image-1), then local processors clean, split, validate, and export assets for Godot, Unity, or raw 2D game workflows.
+  Ask in natural language. Your agent plans the asset pipeline, renders with GPT Image models (gpt-image-1, gpt-image-1-mini, gpt-image-1.5, gpt-image-2, etc.), then local processors clean, split, validate, and export assets for Godot, Unity, or raw 2D game workflows.
 </p>
 
 <p align="center">
@@ -396,6 +396,7 @@ Use $generate2dsprite to create a 2D game similar to Pokemon. You only need to b
 
 | Skill | Use it for | Output |
 | --- | --- | --- |
+| [`imagegen`](./skills/imagegen) | General-purpose image generation and editing — photos, illustrations, textures, UI mockups, logos, any bitmap visual | Generated/edited PNG images |
 | [`generate2dsprite`](./skills/generate2dsprite) | Sprites, animation sheets, props, spell bundles, FX, reference variants, optional layout guides for fixed-frame sheets | Raw sheet, cleaned transparent sheet, frames, GIFs, metadata |
 | [`generate2dmap`](./skills/generate2dmap) | Baked maps, layered raster maps, clean HD RPG maps, prop packs, collision/zones, Godot-editable scenes | Base map, dressed reference, prop pack, extracted props, preview, scene metadata |
 

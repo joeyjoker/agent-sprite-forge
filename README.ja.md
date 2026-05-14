@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  自然言語で依頼すると、Agent がアセット制作パイプラインを設計し、GPT Image モデル（gpt-image-1）で元画像を生成し、ローカル処理で背景除去、フレーム分割、整列、検証、Godot / Unity / 通常の 2D ゲーム向けエクスポートを行います。
+  自然言語で依頼すると、Agent がアセット制作パイプラインを設計し、GPT Image シリーズモデル（gpt-image-1 / 1-mini / 1.5 / 2 など）で元画像を生成し、ローカル処理で背景除去、フレーム分割、整列、検証、Godot / Unity / 通常の 2D ゲーム向けエクスポートを行います。
 </p>
 
 <p align="center">
@@ -163,6 +163,7 @@ image_gen tileset + prop_pack_3x3 + layered_tilemap + separate_props + trigger_z
 
 | Skill | 用途 | 出力 |
 | --- | --- | --- |
+| [`imagegen`](./skills/imagegen) | 汎用画像生成・編集 — 写真、イラスト、テクスチャ、UI モックアップ、ロゴ、あらゆるビットマップ | 生成 / 編集済み PNG 画像 |
 | [`generate2dsprite`](./skills/generate2dsprite) | sprites、animation sheets、props、spell bundles、FX、reference variants、fixed-frame sheets 用 layout guides | raw sheet、cleaned transparent sheet、frames、GIFs、metadata |
 | [`generate2dmap`](./skills/generate2dmap) | baked maps、layered raster maps、clean HD RPG maps、prop packs、collision/zones、Godot-editable scenes、side-scroll/parallax scenes | base map、dressed/stage reference、prop pack、extracted props、preview、scene metadata |
 
