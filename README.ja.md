@@ -1,5 +1,7 @@
 # Agent Sprite Forge
 
+> [0x0funky/agent-sprite-forge](https://github.com/0x0funky/agent-sprite-forge) からの fork — オリジナルは Codex 専用ですが、本 fork は **agent skill をサポートする任意のプラットフォーム**（Claude Code、Cursor、Windsurf、カスタム agent など）で使用できます
+
 言語：[English](./README.md) | [繁體中文](./README.zh-TW.md) | [简体中文](./README.zh-CN.md) | [日本語](./README.ja.md) | [한국어](./README.ko.md)
 
 <p align="center">
@@ -7,11 +9,15 @@
 </p>
 
 <p align="center">
-  <strong>Codex 向けの 2D ゲームアセット Skill。ゲームで使えるスプライト、レイヤー化されたマップ、エンジンへ渡せるプロトタイプ素材を生成します。</strong>
+  <strong>汎用 Agent Skill：ゲームで使える 2D スプライト、レイヤー化マップ、エンジン連携プロトタイプ素材を生成します。</strong>
 </p>
 
 <p align="center">
-  自然言語で依頼すると、Codex がアセット制作パイプラインを設計し、内蔵画像生成で元画像を作り、ローカル処理で背景除去、フレーム分割、整列、検証、Godot / Unity / 通常の 2D ゲーム向けエクスポートを行います。
+  自然言語で依頼すると、Agent がアセット制作パイプラインを設計し、GPT Image モデル（gpt-image-1）で元画像を生成し、ローカル処理で背景除去、フレーム分割、整列、検証、Godot / Unity / 通常の 2D ゲーム向けエクスポートを行います。
+</p>
+
+<p align="center">
+  <strong>必要条件：</strong><a href="https://platform.openai.com/">OpenAI</a> または <a href="https://azure.microsoft.com/products/ai-services/openai-service">Azure OpenAI</a> のアカウント（GPT Image モデルへのアクセス権が必要）。
 </p>
 
 <p align="center">
@@ -24,7 +30,13 @@
 
 ## 何が違うのか
 
-Agent Sprite Forge は単なる prompt 集ではありません。Codex-first の 2D ゲームアセット制作ワークフローです。Agent が必要なアセットと手順を判断し、画像生成がビジュアルを作り、決定論的なローカルスクリプトが再利用可能なゲーム素材へ整えます。
+| | オリジナル (0x0funky) | 本 Fork |
+|---|---|---|
+| **実行環境** | Codex 専用 | skill 対応の任意の agent |
+| **画像生成** | Codex 内蔵 | GPT Image モデル（OpenAI / Azure OpenAI） |
+| **セットアップ** | Codex workspace | `pip install` + 設定 YAML |
+
+Agent Sprite Forge は単なる prompt 集ではありません。Agent 駆動の 2D ゲームアセット制作ワークフローです。Agent が必要なアセットと手順を判断し、GPT Image モデルがビジュアルを作り、決定論的なローカルスクリプトが再利用可能なゲーム素材へ整えます。
 
 <table>
   <tr>

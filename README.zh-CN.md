@@ -1,5 +1,7 @@
 # Agent Sprite Forge
 
+> Fork 自 [0x0funky/agent-sprite-forge](https://github.com/0x0funky/agent-sprite-forge) — 原版仅限 Codex 使用；本 fork 可用于**任何支持 agent skill 的平台**（Claude Code、Cursor、Windsurf、自定义 agent 等）
+
 语言：[English](./README.md) | [繁體中文](./README.zh-TW.md) | [简体中文](./README.zh-CN.md) | [日本語](./README.ja.md) | [한국어](./README.ko.md)
 
 <p align="center">
@@ -7,11 +9,15 @@
 </p>
 
 <p align="center">
-  <strong>面向 Codex 的 2D 游戏资产技能：生成可用的角色精灵、分层地图，以及能交给游戏引擎继续编辑的原型素材。</strong>
+  <strong>通用 Agent Skill：生成可用于游戏的 2D 精灵、分层地图与引擎级原型素材。</strong>
 </p>
 
 <p align="center">
-  用自然语言描述需求，Codex 负责规划资产流程，用内置图像生成产出原始视觉，再用本地处理器去背、切格、对齐、验证，并导出给 Godot、Unity 或普通 2D 游戏项目使用。
+  用自然语言描述需求，Agent 负责规划资产流程，通过 GPT Image 模型（gpt-image-1）生成原始图像，再用本地处理器去背、切格、对齐、验证，并导出给 Godot、Unity 或普通 2D 游戏项目使用。
+</p>
+
+<p align="center">
+  <strong>前置条件：</strong>需要 <a href="https://platform.openai.com/">OpenAI</a> 或 <a href="https://azure.microsoft.com/products/ai-services/openai-service">Azure OpenAI</a> 账号，且有 GPT Image 模型访问权限。
 </p>
 
 <p align="center">
@@ -24,7 +30,13 @@
 
 ## 有什么不同
 
-Agent Sprite Forge 不是一组 prompt 模板。它是一套 Codex-first 的 2D 游戏资产工作流：agent 先判断需要什么资产、图像生成负责创作原始视觉，本地脚本只做可重复的清理、切割、对齐、验证和导出。
+| | 原版 (0x0funky) | 本 Fork |
+|---|---|---|
+| **运行环境** | 仅限 Codex | 任何支持 skill 的 agent |
+| **生图方式** | Codex 内置 | GPT Image 模型（OpenAI / Azure OpenAI） |
+| **安装方式** | Codex workspace | `pip install` + 配置 YAML |
+
+Agent Sprite Forge 不是一组 prompt 模板。它是一套 agent 驱动的 2D 游戏资产工作流：agent 先判断需要什么资产、GPT Image 模型负责创作原始视觉，本地脚本只做可重复的清理、切割、对齐、验证和导出。
 
 <table>
   <tr>
