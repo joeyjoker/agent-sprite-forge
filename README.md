@@ -1,6 +1,6 @@
 # Agent Sprite Forge
 
-> Forked from [0x0funky/agent-sprite-forge](https://github.com/0x0funky/agent-sprite-forge)
+> Forked from [0x0funky/agent-sprite-forge](https://github.com/0x0funky/agent-sprite-forge) — the original is Codex-only; this fork works with **any agent that supports skills** (Claude Code, Cursor, Windsurf, custom agents, etc.)
 
 Languages: [English](./README.md) | [繁體中文](./README.zh-TW.md) | [简体中文](./README.zh-CN.md) | [日本語](./README.ja.md) | [한국어](./README.ko.md)
 
@@ -9,11 +9,15 @@ Languages: [English](./README.md) | [繁體中文](./README.zh-TW.md) | [简体�
 </p>
 
 <p align="center">
-  <strong>Codex skills for game-ready 2D sprites, layered maps, and engine-ready prototypes.</strong>
+  <strong>Agent skills for game-ready 2D sprites, layered maps, and engine-ready prototypes.</strong>
 </p>
 
 <p align="center">
-  Ask in natural language. Codex plans the asset pipeline, renders with built-in image generation, then local processors clean, split, validate, and export assets for Godot, Unity, or raw 2D game workflows.
+  Ask in natural language. Your agent plans the asset pipeline, renders with GPT Image models (gpt-image-1), then local processors clean, split, validate, and export assets for Godot, Unity, or raw 2D game workflows.
+</p>
+
+<p align="center">
+  <strong>Requirements:</strong> An <a href="https://platform.openai.com/">OpenAI</a> or <a href="https://azure.microsoft.com/products/ai-services/openai-service">Azure OpenAI</a> account with GPT Image model access.
 </p>
 
 <p align="center">
@@ -26,7 +30,13 @@ Languages: [English](./README.md) | [繁體中文](./README.zh-TW.md) | [简体�
 
 ## What Makes It Different
 
-Agent Sprite Forge is not just a folder of prompts. It is a Codex-first 2D game asset workflow where the agent decides the plan, image generation creates the raw visuals, and deterministic scripts turn those visuals into reusable game assets.
+| | Original (0x0funky) | This Fork |
+|---|---|---|
+| **Runtime** | Codex only | Any agent with skill support |
+| **Image generation** | Codex built-in | GPT Image models (OpenAI / Azure OpenAI) |
+| **Setup** | Codex workspace | `pip install` + config YAML |
+
+Agent Sprite Forge is not just a folder of prompts. It is an agent-driven 2D game asset workflow where the agent decides the plan, GPT Image models create the raw visuals, and deterministic scripts turn those visuals into reusable game assets.
 
 <table>
   <tr>
